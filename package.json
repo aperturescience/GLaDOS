@@ -3,7 +3,8 @@
   "description": "A home automation implementation that won't flood your house with a deadly neurotoxin",
   "author": "Gilles De Mey, Michiel De Mey, Seppe Stas",
   "dependencies": {
-    "socket.io": "0.9.x"
+    "socket.io": "0.9.x",
+    "express": "^3.4.8"
   },
   "engines": {
     "node": ">=0.10.0"
