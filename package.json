@@ -1,0 +1,9 @@
+{
+  "name": "glados",
+  "description": "A home automation implementation that won't flood your house with a deadly neurotoxin",
+  "author": "Gilles De Mey, Michiel De Mey, Seppe Stas",
+  "dependencies": {
+    "socket.io": "0.9.x"
+  },
+  "engine": "node 0.10.0"
+}
