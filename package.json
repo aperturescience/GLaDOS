@@ -5,5 +5,7 @@
   "dependencies": {
     "socket.io": "0.9.x"
   },
-  "engine": "node 0.10.0"
+  "engines": {
+    "node": ">=0.10.0"
+  }
 }
