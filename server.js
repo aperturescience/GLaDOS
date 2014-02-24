@@ -1,6 +1,6 @@
 'use strict';
 
-var port = process.env.PORT ||80;
+var port = process.env.PORT || 3000;
 
 var io = require('socket.io').listen(port);
 
