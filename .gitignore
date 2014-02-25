@@ -1,0 +1,18 @@
+node_modules/
+vendor/
+
+# Ignore Sublime Project Files
+*.sublime*
+
+# Ignore Hidden OS Filesystem Info
+*.DS_Store
+
+# Ignore Sass Cache
+*sass-cache*
+
+# Windows related files
+ehthumbs.db
+Thumbs.db
+*.TMP
+*.tmp
+*.dmp
