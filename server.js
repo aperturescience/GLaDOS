@@ -1,7 +1,7 @@
 var app    = require('express')(),
     server = require('http').createServer(app),
     io     = require('socket.io').listen(server),
-    port   = parseInt(process.env.PORT) || 3000, // We need to use parseInt because all environment variables are strings ~ Gilles
+    port   = parseInt(process.env.PORT) || 3000, // We need to use parseInt because all environment variables are strings ~ Gilles
     redis  = require("redis"),
     redisClient = redis.createClient(19109, 'pub-redis-19109.us-central1-1-1.gce.garantiadata.com');
 
