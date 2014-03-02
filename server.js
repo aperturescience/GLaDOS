@@ -1,7 +1,7 @@
 var app = require('express')()
   , server = require('http').createServer(app)
   , io = require('socket.io').listen(server)
-  , port = parseInt(process.env.PORT) || 3000; // we need to use parseInt because all environment variables are strings ~ Gilles
+  , port = parseInt(process.env.PORT) || 3000; // we need to use parseInt because all environment variables are strings ~ Gilles
 
 server.listen(port);
 
