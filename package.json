@@ -4,7 +4,9 @@
   "author": "Gilles De Mey, Michiel De Mey, Seppe Stas",
   "dependencies": {
     "socket.io": "0.9.x",
-    "express": "^3.4.8"
+    "express": "^3.4.8",
+    "redis": "~0.10.1",
+    "hiredis": "~0.1.16"
   },
   "engines": {
     "node": ">=0.10.0"
