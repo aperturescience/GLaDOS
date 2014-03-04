@@ -38,7 +38,7 @@ function startSocketIO() {
       console.log(sysinfo);
 
       redisClient.HMSET(sysinfo.uuid, sysinfo, function() {
-        console.log('Saved system information for', uuid);
+        console.log('Saved system information for', sysinfo.uuid);
       });
     });
   });
