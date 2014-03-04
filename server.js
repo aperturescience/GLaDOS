@@ -1,4 +1,5 @@
 var app    = require('express')(),
+    util   = require('util'),
     server = require('http').createServer(app),
     io     = require('socket.io').listen(server),
     port   = parseInt(process.env.PORT) || 3000, // We need to use parseInt because all environment variables are strings ~ Gilles
