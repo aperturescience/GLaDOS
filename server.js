@@ -3,7 +3,7 @@ var app    = require('express')(),
     io     = require('socket.io').listen(server),
     port   = parseInt(process.env.PORT) || 3000, // We need to use parseInt because all environment variables are strings ~ Gilles
     redis  = require("redis"),
-    redisClient = redis.createClient(19109, process.env.REDIS_SERVER);
+    redisClient = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_SERVER);
 
 redisClient.auth(process.env.REDIS_PASS, function success() {
   console.log('Successfully connected');
