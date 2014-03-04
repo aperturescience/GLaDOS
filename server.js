@@ -35,7 +35,7 @@ function startSocketIO() {
     socket.emit('greeting', { hello: 'human' });
 
     socket.on('wheatley.sysinfo', function (sysinfo) {
-      console.log(sysinfo);
+      console.log(util.inspect(sysinfo, { depth: null }));
 
       redisClient.HMSET(sysinfo.uuid, sysinfo, function() {
         console.log('Saved system information for', sysinfo.uuid);
