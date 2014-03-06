@@ -48,7 +48,7 @@ function remoteAddress(socket) {
 }
 
 function logSytemInfo(sysinfo) {
-  nano.db.use('sysinfo').insert(sysinfo, uuid.v4(), function (err, body, header) {
+  nano.use('sysinfo').insert(sysinfo, sysinfo.uuid, function (err, body, header) {
     if (err) {
       console.error('Error saving document:', err);
       return;
