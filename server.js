@@ -1,14 +1,11 @@
 'use strict';
 
 var app    = require('express')(),
-    util   = require('util'),
     server = require('http').createServer(app),
     io     = require('socket.io').listen(server),
+    nano   = require('nano')('http://michiel.io:5984'),
     port   = parseInt(process.env.PORT) || 3000, // We need to use parseInt because all environment variables are strings ~ Gilles
-    redis  = require('redis');
-
-
-var redisClient = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_SERVER);
+    uuid = require('node-uuid');
 
 module.init = function () {
   module.startWebServer();
@@ -51,20 +48,13 @@ function remoteAddress(socket) {
 }
 
 function logSytemInfo(sysinfo) {
-
-  console.log(util.inspect(sysinfo, { depth: null }));
-
-  redisClient.HMSET(sysinfo.uuid, sysinfo, function () {
-    console.log('Saved system information for', sysinfo.uuid);
+  nano.db.use('sysinfo').insert(sysinfo, uuid.v4(), function (err, body, header) {
+    if (err) {
+      console.error('Error saving document:', err);
+      return;
+    }
+    console.log('Saved system information', sysinfo.uuid);
   });
-
 }
 
-redisClient.on('error', function (err) {
-  console.error('[redisclient]:', err);
-});
-
-redisClient.auth(process.env.REDIS_PASS, function success() {
-  console.log('[redisclient]: Successfully connected');
-  module.init();
-});
+module.init();
