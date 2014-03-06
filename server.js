@@ -48,13 +48,21 @@ function remoteAddress(socket) {
 }
 
 function logSytemInfo(sysinfo) {
-  nano.use('sysinfo').insert(sysinfo, sysinfo.uuid, function (err, body, header) {
-    if (err) {
-      console.error('Error saving document:', err);
-      return;
-    }
-    console.log('Saved system information', sysinfo.uuid);
+
+  var db = nano.use('sysinfo');
+
+  db.get(sysinfo.uuid, function (err, body) {
+    if (err) return;
+    sysinfo._rev = body.rev;
+    db.insert(sysinfo, sysinfo.uuid, function (err, body, header) {
+      if (err) {
+        console.error('Error saving document:', err);
+        return;
+      }
+      console.log('Saved system information', sysinfo.uuid);
+    });
   });
+
 }
 
 module.init();
