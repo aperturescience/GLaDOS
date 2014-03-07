@@ -1,18 +1,20 @@
 'use strict';
 
-var app    = require('express')(),
-    server = require('http').createServer(app),
-    io     = require('socket.io').listen(server),
-    nano   = require('nano')('http://michiel.io:5984'),
-    port   = parseInt(process.env.PORT) || 3000, // We need to use parseInt because all environment variables are strings ~ Gilles
-    uuid = require('node-uuid');
+var app         = require('express')(),
+    config      = require('./config/settings.json'),
+    server      = require('http').createServer(app),
+    io          = require('socket.io').listen(server),
+    nano        = require('nano')(config.db.url + ':' + config.db.port),
+    // We need to use parseInt because all environment variables are strings
+    port        = parseInt(process.env.PORT) || 3000;
 
-module.init = function () {
-  module.startWebServer();
-  module.startSocketServer();
+exports.init = function () {
+  exports.startWebServer();
+  exports.startDatabase();
+  exports.startSocketServer();
 };
 
-module.startWebServer = function () {
+exports.startWebServer = function () {
 
   server.listen(port);
   console.log('Express is listening on port', port);
@@ -25,7 +27,7 @@ module.startWebServer = function () {
 
 };
 
-module.startSocketServer = function () {
+exports.startSocketServer = function () {
 
   console.log('Socket.IO is listening for connections on port', port);
 
@@ -47,14 +49,38 @@ function remoteAddress(socket) {
   return socket.handshake.headers['x-forwarded-for'] || socket.handshake.address.address;
 }
 
-function logSytemInfo(sysinfo) {
-  nano.use('sysinfo').insert(sysinfo, sysinfo.uuid, function (err, body, header) {
+exports.startDatabase = function () {
+  nano.relax(function (err, body, header) {
     if (err) {
-      console.error('Error saving document:', err);
-      return;
+      console.error(err);
+      process.exit();
     }
-    console.log('Saved system information', sysinfo.uuid);
+    console.log('[db]: connected to couchDB v' + body.version);
   });
+};
+
+function logSytemInfo(sysinfo) {
+
+  var sysinfoDb = nano.use('sysinfo');
+
+  sysinfoDb.get(sysinfo.uuid, function (err, body, header) {
+
+    if (err) return; // silently fail
+
+    sysinfo._rev = body._rev;
+
+    sysinfoDb.insert(sysinfo, body.uuid, function (err, body, header) {
+
+      if (err) {
+        console.error('Error saving document:', err);
+        return;
+      }
+
+      console.log('Saved system information', sysinfo.uuid);
+
+    });
+  });
+
 }
 
-module.init();
+exports.init();
