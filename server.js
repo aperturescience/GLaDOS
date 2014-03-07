@@ -5,6 +5,7 @@ var app         = require('express')(),
     server      = require('http').createServer(app),
     io          = require('socket.io').listen(server),
     nano        = require('nano')(config.db.url + ':' + config.db.port),
+    db          = require('./core/db.js'),
     // We need to use parseInt because all environment variables are strings
     port        = parseInt(process.env.PORT) || 3000;
 
@@ -50,37 +51,19 @@ function remoteAddress(socket) {
 }
 
 exports.startDatabase = function () {
+  // ping the database
   nano.relax(function (err, body, header) {
     if (err) {
       console.error(err);
-      process.exit();
+      process.exit(1);
     }
     console.log('[db]: connected to couchDB v' + body.version);
   });
 };
 
 function logSytemInfo(sysinfo) {
-
-  var sysinfoDb = nano.use('sysinfo');
-
-  sysinfoDb.get(sysinfo.uuid, function (err, body, header) {
-
-    if (err) return; // silently fail
-
-    sysinfo._rev = body._rev;
-
-    sysinfoDb.insert(sysinfo, body.uuid, function (err, body, header) {
-
-      if (err) {
-        console.error('Error saving document:', err);
-        return;
-      }
-
-      console.log('Saved system information', sysinfo.uuid);
-
-    });
-  });
-
+  var dbname = nano.use('sysinfo');
+  db.insert(dbname, sysinfo.uuid, sysinfo);
 }
 
 exports.init();
