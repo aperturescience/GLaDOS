@@ -51,13 +51,14 @@ function remoteAddress(socket) {
 }
 
 exports.startDatabase = function () {
-  // ping the database
-  nano.relax(function (err, body, header) {
-    if (err) {
-      console.error(err);
-      process.exit(1);
-    }
+  db.ping(nano, function online(body, header) {
+
     console.log('[db]: connected to couchDB v' + body.version);
+
+  }, function offline(err) {
+
+    db.boot();
+
   });
 };
 

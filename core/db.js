@@ -1,5 +1,7 @@
 'use strict';
 
+var spawn     = require('child_process').spawn;
+
 exports.setup = function () {
   require('../db/setup').start();
 };
@@ -22,6 +24,21 @@ exports.insert = function (db, uuid, data) {
       console.log('Saved system information', uuid);
 
     });
+
   });
 
+};
+
+exports.ping = function (instance, success, fail) {
+  instance.relax(function (err, body, header) {
+    if (err) {
+      fail(err);
+    } else {
+      success(body, header);
+    }
+  });
+};
+
+exports.boot = function () {
+  spawn('couchdb');
 };
