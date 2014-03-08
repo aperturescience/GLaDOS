@@ -3,7 +3,7 @@
 var spawn = require('child_process').spawn;
 
 exports.setup = function () {
-  require('../db/setup').start();
+  require('../db/setup').seed();
 };
 
 exports.insert = function (db, uuid, data) {

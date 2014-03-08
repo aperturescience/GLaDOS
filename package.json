@@ -6,9 +6,16 @@
     "socket.io": "0.9.x",
     "express": "^3.4.8",
     "nano": "^5.7.1",
-    "node-uuid": "^1.4.1"
+    "node-uuid": "^1.4.1",
+    "lodash-node": "^2.4.1"
   },
   "engines": {
     "node": "0.10.26"
+  },
+  "scripts": {
+    "test": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && rm -rf ./coverage"
+  },
+  "devDependencies": {
+    "mocha": "^1.17.1"
   }
 }

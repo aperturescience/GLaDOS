@@ -1,24 +1,26 @@
 'use strict';
 
-var nano      = require('nano')('http://michiel.io:5984');
+var config      = require('../config/settings.json'),
+    seed        = require('./seed.json'),
+    nano        = require('nano')(config.db.url + ':' + config.db.port);
 
-exports.start = function () {
-  exports.seed();
-};
+exports.seed = function (callback) {
 
-exports.seed = function () {
+  var dbs = seed.databases;
 
-  var reqDatabases = [
-    'sysinfo',
-  ];
+  dbs.forEach(function (db) {
+    nano.db.create(db, function (err, body) {
+      if (err) return; // silently fail
+      console.log('Created database', db, '...');
+    });
+  });
 
-  for (var dbname in reqDatabases) {
-    nano.db.create(dbname, returnHandler);
+  if (typeof callback === 'function') {
+    nano.db.list(function (err, body) {
+      callback(body);
+    });
   }
 
-  function returnHandler(err, body) {
-    if (err) return; // silently fail
-    console.log('Created database', body, '...');
-  }
-
 };
+
+exports.seed();

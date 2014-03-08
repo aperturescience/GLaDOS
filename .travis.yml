@@ -1,0 +1,12 @@
+services: couchdb
+language: node_js
+node_js:
+  - "0.11"
+  - "0.10"
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/c84f25dea4f3057c1467
+    on_success: always  # options: [always|never|change] default: always
+    on_failure: always  # options: [always|never|change] default: always
+    on_start: false     # default: false
