@@ -1,6 +1,6 @@
 'use strict';
 
-var spawn     = require('child_process').spawn;
+var spawn = require('child_process').spawn;
 
 exports.setup = function () {
   require('../db/setup').start();
@@ -10,35 +10,43 @@ exports.insert = function (db, uuid, data) {
 
   db.get(uuid, function (err, body, header) {
 
-    if (!err && body) {
+    if (!err && body)
       data._rev = body._rev;
-    }
 
     db.insert(data, uuid, function (err, body, header) {
-
       if (err) {
         console.error('Error saving document:', err);
         return;
       }
-
       console.log('Saved system information', uuid);
-
     });
 
   });
-
 };
 
 exports.ping = function (instance, success, fail) {
   instance.relax(function (err, body, header) {
-    if (err) {
+    if (err)
       fail(err);
-    } else {
+    else
       success(body, header);
-    }
   });
 };
 
 exports.boot = function () {
-  spawn('couchdb');
+
+  var couch = spawn('couchdb');
+
+  couch.stdout.on('data', function (data) {
+    console.log('[couchdb]: ' + data);
+  });
+
+  couch.stderr.on('data', function (data) {
+    console.log('[couchdb]: ' + data);
+  });
+
+  couch.on('close', function (code) {
+    console.log('couchdb exited with code ' + code);
+  });
+
 };
