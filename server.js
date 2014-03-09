@@ -2,6 +2,7 @@
 
 var app         = require('express')(),
     config      = require('./config/settings.json'),
+    logger      = require('./config/winston'),
     server      = require('http').createServer(app),
     io          = require('socket.io').listen(server),
     nano        = require('nano')(config.db.url + ':' + config.db.port),
@@ -18,7 +19,7 @@ exports.init = function () {
 exports.startWebServer = function () {
 
   server.listen(port);
-  console.log('Express is listening on port', port);
+  logger.log('Express is listening on port', port);
 
   app.get('/', function (req, res) {
     res.send({
@@ -30,7 +31,7 @@ exports.startWebServer = function () {
 
 exports.startSocketServer = function () {
 
-  console.log('Socket.IO is listening for connections on port', port);
+  logger.log('Socket.IO is listening for connections on port', port);
 
   io.sockets.on('connection', function (socket) {
 
@@ -53,7 +54,7 @@ function remoteAddress(socket) {
 exports.startDatabase = function () {
   db.ping(nano, function online(body, header) {
 
-    console.log('[db]: connected to couchDB v' + body.version);
+    logger.log('[db]: connected to couchDB v' + body.version);
 
   }, function offline(err) {
 

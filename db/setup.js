@@ -1,6 +1,7 @@
 'use strict';
 
 var config      = require('../config/settings.json'),
+    logger      = require('../config/winston'),
     seed        = require('./seed.json'),
     nano        = require('nano')(config.db.url + ':' + config.db.port);
 
@@ -11,7 +12,7 @@ exports.seed = function (callback) {
   dbs.forEach(function (db) {
     nano.db.create(db, function (err, body) {
       if (err) return; // silently fail
-      console.log('Created database', db, '...');
+      logger.log('Created database', db, '...');
     });
   });
 
