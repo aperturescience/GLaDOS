@@ -2,9 +2,9 @@
 
 var app         = require('express')(),
     config      = require('./config/settings.json'),
-    logger      = require('./config/winston'),
+    logger      = require('./config/logger'),
     server      = require('http').createServer(app),
-    io          = require('socket.io').listen(server),
+    io          = require('socket.io').listen(server,  { 'log level': 1 }),
     nano        = require('nano')(config.db.url + ':' + config.db.port),
     db          = require('./core/db.js'),
     // We need to use parseInt because all environment variables are strings
@@ -19,7 +19,7 @@ exports.init = function () {
 exports.startWebServer = function () {
 
   server.listen(port);
-  logger.log('Express is listening on port', port);
+  logger.log('verbose', 'Express is listening on port %d', port);
 
   app.get('/', function (req, res) {
     res.send({
@@ -31,7 +31,7 @@ exports.startWebServer = function () {
 
 exports.startSocketServer = function () {
 
-  logger.log('Socket.IO is listening for connections on port', port);
+  logger.log('verbose', 'Socket.IO is listening for connections on port %d', port);
 
   io.sockets.on('connection', function (socket) {
 
@@ -54,7 +54,7 @@ function remoteAddress(socket) {
 exports.startDatabase = function () {
   db.ping(nano, function online(body, header) {
 
-    logger.log('[db]: connected to couchDB v' + body.version);
+    logger.log('verbose', '[db]: connected to couchDB v%s', body.version);
 
   }, function offline(err) {
 

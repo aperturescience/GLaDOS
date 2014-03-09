@@ -1,7 +1,7 @@
 'use strict';
 
 var config      = require('../config/settings.json'),
-    logger      = require('../config/winston'),
+    logger      = require('../config/logger'),
     seed        = require('./seed.json'),
     nano        = require('nano')(config.db.url + ':' + config.db.port);
 

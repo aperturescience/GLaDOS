@@ -1,7 +1,7 @@
 'use strict';
 
 var spawn   = require('child_process').spawn,
-    logger  = require('../config/winston');
+    logger  = require('../config/logger');
 
 exports.setup = function () {
   require('../db/setup').seed();
@@ -47,7 +47,7 @@ exports.boot = function () {
   });
 
   couch.stdout.on('data', function (data) {
-    logger.log('[couchdb]: ' + data);
+    logger.log('verbose', '[couchdb]: ' + data);
   });
 
   couch.stderr.on('data', function (data) {
@@ -55,7 +55,7 @@ exports.boot = function () {
   });
 
   couch.on('close', function (code) {
-    logger.log('couchdb exited with code ' + code);
+    logger.log('verbose', 'couchdb exited with code ' + code);
   });
 
 };
