@@ -8,7 +8,7 @@
     "nano": "^5.7.1",
     "node-uuid": "^1.4.1",
     "lodash-node": "^2.4.1",
-    "turret": "aperturescience/turret"
+    "turret": "git://github.com/aperturescience/turret.git#master"
   },
   "engines": {
     "node": "0.10.26"

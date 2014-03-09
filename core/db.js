@@ -40,7 +40,8 @@ exports.boot = function () {
 
   couch.on('error', function (err) {
     if (err.message.indexOf('ENOENT') !== -1) {
-      throw new Error('[couchdb]: Could not find the couchdb executable.');
+      logger.error('[couchdb]: Could not find the couchdb executable.');
+      process.exit(1);
     }
     else
       throw err;
